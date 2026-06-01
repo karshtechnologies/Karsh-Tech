@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karsh Technologies - We Create World Advancing Software</title>
+  <meta name="description" content="Karsh Technologies designs and builds modern web development solutions, secure infrastructure, robust APIs, and custom integrations tailored for modern high-performance platforms.">
+  <link rel="stylesheet" href="css/style.css?v=1.2">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Additional Page Specific Styles -->
+  <style>
+    /* Hero section styling */
+    .hero-section {
+      padding-top: 160px;
+      padding-bottom: 120px;
+      background: radial-gradient(circle at 80% 20%, rgba(82, 255, 125, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 10% 80%, rgba(82, 255, 125, 0.03) 0%, transparent 40%);
+      position: relative;
+    }
+    
+    .hero-section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 680px;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 6vw, 60px);
+      margin-bottom: 24px;
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    /* Floating Users avatar pile */
+    .hero-trustees {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar-pile {
+      display: flex;
+    }
+
+    .avatar-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid var(--bg-primary);
+      margin-left: -12px;
+      background-color: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--accent-neon);
+    }
+
+    .avatar-circle:first-child {
+      margin-left: 0;
+    }
+
+    .avatar-circle.av-1 { background: radial-gradient(circle, #2a4332, #161d15); }
+    .avatar-circle.av-2 { background: radial-gradient(circle, #3e284a, #161d15); }
+    .avatar-circle.av-3 { background: radial-gradient(circle, #1a3240, #161d15); }
+    .avatar-circle.av-4 { background: radial-gradient(circle, #443c20, #161d15); }
+
+    .trustees-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .trustees-text span {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .hero-graphic {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-glowing-backdrop {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(82, 255, 125, 0.15) 0%, transparent 70%);
+      filter: blur(20px);
+      z-index: 1;
+    }
+
+    .hero-tech-shield {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      z-index: 2;
+      animation: floatAnimation 6s ease-in-out infinite;
+    }
+
+    @keyframes floatAnimation {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Columned features list */
+    .feature-list-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 32px;
+    }
+
+    .feature-item-inline {
+      display: flex;
+      gap: 16px;
+    }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: rgba(82, 255, 125, 0.08);
+      border: 1px solid rgba(82, 255, 125, 0.2);
+      color: var(--accent-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Privacy and Performance Sections */
+    .split-layout {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .split-layout.reversed {
+      flex-direction: row-reverse;
+    }
+
+    .split-text {
+      flex: 1;
+    }
+
+    .split-graphic {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .terminal-mockup {
+      width: 100%;
+      max-width: 480px;
+      background-color: #080808;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      background-color: #111;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .td-red { background-color: #ff5f56; }
+    .td-yellow { background-color: #ffbd2e; }
+    .td-green { background-color: #27c93f; }
+
+    .terminal-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 600;
+    }
+
+    .terminal-body {
+      padding: 24px;
+      font-family: monospace;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .prompt { color: var(--accent-neon); }
+    .comment { color: var(--text-muted); }
+    .keyword { color: #f92672; }
+    .string { color: #e6db74; }
+
+    /* Features 4-grid customized heights */
+    .card-featured {
+      grid-column: span 2;
+      background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(82, 255, 125, 0.08), transparent 40%),
+                  linear-gradient(135deg, var(--bg-card) 0%, rgba(22, 29, 21, 0.3) 100%);
+      border-color: var(--accent-neon-glow);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-content {
+        margin: 0 auto;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .hero-trustees {
+        justify-content: center;
+      }
+      .split-layout, .split-layout.reversed {
+        flex-direction: column;
+        gap: 40px;
+      }
+      .card-featured {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="brand-container">
+        <a href="index.html" class="logo-link">
+          <img src="assets/logo.svg" alt="Karsh Technologies">
+        </a>
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-slash">/</span>
+          <span class="current-page-indicator">Home</span>
+        </div>
+      </div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="news.html" class="nav-link">News</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="search-trigger" aria-label="Search site">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </a>
+        <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+        <div class="menu-toggle" id="menuToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="Karsh Technologies">
+      </a>
+      <div class="drawer-close" id="drawerClose">&times;</div>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html" class="mobile-nav-link active">Home</a></li>
+      <li><a href="services.html" class="mobile-nav-link">Services</a></li>
+      <li><a href="about.html" class="mobile-nav-link">About</a></li>
+      <li><a href="portfolio.html" class="mobile-nav-link">Portfolio</a></li>
+      <li><a href="news.html" class="mobile-nav-link">News</a></li>
+      <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn btn-primary" style="margin-top: auto; width: 100%;">Get in Touch</a>
+  </div>
+
+  <!-- SEARCH OVERLAY MODAL -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-container">
+      <div class="search-close" id="searchClose">&times;</div>
+      <form class="search-form-overlay" action="news.html" method="GET">
+        <input type="text" name="s" id="searchOverlayInput" class="search-input-overlay" placeholder="Search resources, topics, advice..." required autocomplete="off">
+        <button type="submit" class="search-submit-overlay" aria-label="Submit search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </form>
+      <p class="search-hint">Press ESC to close search panel or click outside</p>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main id="main">
+    
+    <!-- HERO SECTION -->
+    <section class="section hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="badge">Karsh Technologies Starter Kit</div>
+          <h1 class="hero-title">We Create World <span class="text-accent">Advancing</span> Software</h1>
+          <p class="hero-subtitle">We help build the operating system for data-driven companies to find and pull their performance levers. Bring secure scalability and elite tech design parameters to your enterprise pipelines.</p>
+          <div class="hero-actions">
+            <a href="contact.html" class="btn btn-primary">Get started now</a>
+            <a href="services.html" class="btn btn-secondary">Learn more information</a>
+          </div>
+          <div class="hero-trustees">
+            <div class="avatar-pile">
+              <div class="avatar-circle av-1">JS</div>
+              <div class="avatar-circle av-2">PY</div>
+              <div class="avatar-circle av-3">GO</div>
+              <div class="avatar-circle av-4">TS</div>
+            </div>
+            <div class="trustees-text">
+              <span>Trusted by industry experts</span>
+              4.9 out of 5 stars (based on 300+ worldwide reviews)
+            </div>
+          </div>
+        </div>
+        <div class="hero-graphic">
+          <div class="hero-glowing-backdrop"></div>
+          <!-- Tech Shield Illustration -->
+          <svg class="hero-tech-shield" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#161d15" />
+                <stop offset="100%" stop-color="#0c0c0c" />
+              </linearGradient>
+            </defs>
+            <!-- Background floating orbits -->
+            <circle cx="200" cy="200" r="160" stroke="rgba(82, 255, 125, 0.1)" stroke-width="1.5" stroke-dasharray="10 10"/>
+            <circle cx="200" cy="200" r="120" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+            <circle cx="200" cy="200" r="80" stroke="rgba(82, 255, 125, 0.2)" stroke-width="2" stroke-dasharray="2 6" />
+            <!-- Hexagonal Tech Shield -->
+            <path d="M200 40 L340 100 L340 240 L200 360 L60 240 L60 100 Z" fill="url(#shieldGrad)" stroke="#52ff7d" stroke-width="4" stroke-linejoin="round" />
+            <!-- Inner futuristic details -->
+            <path d="M200 70 L310 120 L310 230 L200 320 L90 230 L90 120 Z" fill="none" stroke="rgba(82, 255, 125, 0.15)" stroke-width="1.5" stroke-linejoin="round" />
+            <!-- Glowing tech core -->
+            <circle cx="200" cy="200" r="30" fill="rgba(82, 255, 125, 0.1)" stroke="#52ff7d" stroke-width="3" />
+            <path d="M190 200 L210 200 M200 190 L200 210" stroke="#52ff7d" stroke-width="3" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSFORMING IDEAS INTO IMPACT -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="split-layout">
+          <div class="split-text">
+            <div class="badge">Core Focus</div>
+            <h2>Transforming Ideas Into Impact</h2>
+            <p style="margin-top: 24px; font-size: 17px; line-height: 1.8;">Our methodologies focus on building highly customizable structures that align perfectly with the evolving demands of enterprise software architectures.</p>
+            <div class="feature-list-vertical">
+              <div class="feature-item-inline">
+                <div class="check-icon">✓</div>
+                <div>
+                  <h4 style="font-size: 16px; margin-bottom: 4px;">Clean Architecture Blueprint</h4>
+                  <p style="font-size: 14px; color: var(--text-muted);">Ensure clear modular updates and smooth code maintainability states.</p>
+                </div>
+              </div>
+              <div class="feature-item-inline">
+                <div class="check-icon">✓</div>
+                <div>
+                  <h4 style="font-size: 16px; margin-bottom: 4px;">Optimized rendering nodes</h4>
+                  <p style="font-size: 14px; color: var(--text-muted);">Enable lightning-fast response parameters across web components.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="split-graphic">
+            <!-- Sleek Code Mockup -->
+            <div class="terminal-mockup">
+              <div class="terminal-header">
+                <span class="terminal-dot td-red"></span>
+                <span class="terminal-dot td-yellow"></span>
+                <span class="terminal-dot td-green"></span>
+                <span class="terminal-title">architecture.config.js</span>
+              </div>
+              <div class="terminal-body">
+                <p><span class="keyword">const</span> <span class="string">config</span> = {</p>
+                <p>&nbsp;&nbsp;engine: <span class="string">"KarshTechV2"</span>,</p>
+                <p>&nbsp;&nbsp;performance: {</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;rendering: <span class="string">"edge-accelerated"</span>,</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;caching: <span class="keyword">true</span>,</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;latencyTargetMs: <span class="string">40</span></p>
+                <p>&nbsp;&nbsp;},</p>
+                <p>&nbsp;&nbsp;security: {</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;isolation: <span class="string">"isolated-sandbox"</span>,</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;encryption: <span class="string">"AES-256-GCM"</span></p>
+                <p>&nbsp;&nbsp;}</p>
+                <p>};</p>
+                <p class="comment">// Optimized structure deployed successfully.</p>
+                <p><span class="prompt">$</span> node deploy.js --production</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCOVER ALL THE POWERFUL KARSH TECHNOLOGIES FEATURES -->
+    <section class="section">
+      <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 60px auto;">
+          <div class="badge">Featured Blocks</div>
+          <h2>Discover All The Powerful Karsh Technologies Features</h2>
+          <p style="margin-top: 16px; color: var(--text-secondary); font-size: 16px;">Unlock robust parameters designed to streamline digital frameworks, enhance collaboration matrices, and scale applications without friction.</p>
+        </div>
+        
+        <div class="grid-3">
+          <div class="card">
+            <div class="icon-box">📱</div>
+            <h3>Mobile Applications</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Innovative mobile apps carefully tailored to your special enterprise requirements, using responsive structures.</p>
+          </div>
+          <div class="card">
+            <div class="icon-box">🔌</div>
+            <h3>Integration With Devices</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Seamless device integration designed to simplify your technical experience and streamline connection states.</p>
+          </div>
+          <div class="card">
+            <div class="icon-box">💳</div>
+            <h3>Billing Systems</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Smart billing systems built to simplify global financial management, tracking logs, and reporting frameworks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHERE PRIVACY MEETS PERFORMANCE EXCELLENCE -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="split-layout reversed">
+          <div class="split-text">
+            <div class="badge">High Standards</div>
+            <h2>Where Privacy Meets Performance Excellence</h2>
+            <p style="margin-top: 24px; font-size: 17px; line-height: 1.8; color: var(--text-secondary);">Designed to provide maximum security, high reliability, and absolute privacy for modern businesses everywhere. Build applications with complete peace of mind.</p>
+            <div style="margin-top: 40px;">
+              <a href="contact.html" class="btn btn-primary">Get Started Now</a>
+            </div>
+          </div>
+          <div class="split-graphic">
+            <!-- Dynamic Network Node Visual -->
+            <svg width="100%" max-width="440px" height="340px" viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Network Connections -->
+              <line x1="150" y1="50" x2="60" y2="150" stroke="#52ff7d" stroke-width="1.5" stroke-dasharray="4 4" />
+              <line x1="150" y1="50" x2="240" y2="150" stroke="#52ff7d" stroke-width="1.5" stroke-dasharray="4 4" />
+              <line x1="60" y1="150" x2="150" y2="200" stroke="#52ff7d" stroke-width="1.5" />
+              <line x1="240" y1="150" x2="150" y2="200" stroke="#52ff7d" stroke-width="1.5" />
+              <line x1="150" y1="50" x2="150" y2="200" stroke="rgba(255, 255, 255, 0.1)" stroke-width="2" />
+              
+              <!-- Nodes -->
+              <circle cx="150" cy="50" r="14" fill="#161d15" stroke="#52ff7d" stroke-width="2" />
+              <circle cx="150" cy="50" r="4" fill="#52ff7d" />
+              
+              <circle cx="60" cy="150" r="14" fill="#161d15" stroke="#52ff7d" stroke-width="2" />
+              <circle cx="60" cy="150" r="4" fill="#52ff7d" />
+              
+              <circle cx="240" cy="150" r="14" fill="#161d15" stroke="#52ff7d" stroke-width="2" />
+              <circle cx="240" cy="150" r="4" fill="#52ff7d" />
+              
+              <circle cx="150" cy="200" r="18" fill="#1e2b1a" stroke="#52ff7d" stroke-width="3" />
+              <path d="M145 200 L149 204 L156 195" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT WE PROVIDE -->
+    <section class="section">
+      <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 60px auto;">
+          <div class="badge">Capabilities</div>
+          <h2>What we provide</h2>
+          <p style="margin-top: 16px; color: var(--text-secondary); font-size: 16px;">We deliver premium technological services built for data-driven teams to measure, manage, and scale performance metrics.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card card-featured">
+            <div class="badge" style="margin-bottom: 16px;">Featured Solution</div>
+            <h3 style="font-size: 26px;">Optimizing Business Performance</h3>
+            <p style="color: var(--text-secondary); font-size: 16px; margin-top: 16px; line-height: 1.8;">An intelligent system designed for data-driven teams to measure, manage, and amplify performance across all operations. Bring clarity to complex business ecosystems and scale with absolute precision.</p>
+            <div style="margin-top: 32px;">
+              <a href="contact.html" class="btn btn-primary">Get Started Now</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="icon-box">🧠</div>
+            <h3>Artificial Intelligence</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">We design the core infrastructure for the data-driven future, connecting complex neural pipelines seamlessly.</p>
+            <div style="margin-top: 24px;">
+              <a href="services.html" class="btn-text">More Information</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="icon-box">🎨</div>
+            <h3>UI/UX Breakdown</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Elite interface layouts carefully crafted to ensure smooth transitions, premium user experiences, and visual clarity.</p>
+            <div style="margin-top: 24px;">
+              <a href="services.html" class="btn-text">More Information</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="icon-box">📊</div>
+            <h3>Tech Stack Analysis</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Comprehensive insights to enhance your software architecture efficiency, identifying bottlenecks and scaling paths.</p>
+            <div style="margin-top: 24px;">
+              <a href="services.html" class="btn-text">More Information</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="icon-box">🛡️</div>
+            <h3>Security Assessment</h3>
+            <p style="color: var(--text-secondary); font-size: 15px; margin-top: 16px;">Thorough penetration and system diagnostics ensuring your business remains protected from evolving external threat patterns.</p>
+            <div style="margin-top: 24px;">
+              <a href="services.html" class="btn-text">More Information</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TURNING COMPLEX CODE INTO POWERFUL SOLUTIONS -->
+    <section class="section section-alt">
+      <div class="container">
+        <div class="grid-2" style="align-items: center; margin-bottom: 60px;">
+          <div>
+            <div class="badge">Scale Stack</div>
+            <h2>Turning Complex Code into Powerful Solutions</h2>
+            <p style="margin-top: 20px; font-size: 17px; color: var(--text-secondary); line-height: 1.8;">From custom APIs to full-stack microservices, build scalable, secure, and high-performing tech products crafted with extreme engineering precision.</p>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h4 style="font-size: 18px; margin-bottom: 8px;">Programming Solutions</h4>
+              <p style="font-size: 14px; color: var(--text-muted);">Tailored software solutions for absolute scaling capacities.</p>
+              <a href="services.html" class="btn-text" style="margin-top: 16px;">More Information</a>
+            </div>
+            <div class="card">
+              <h4 style="font-size: 18px; margin-bottom: 8px;">Secure Infrastructure</h4>
+              <p style="font-size: 14px; color: var(--text-muted);">Ensure high stability and cross-environment data protection.</p>
+              <a href="services.html" class="btn-text" style="margin-top: 16px;">More Information</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-4">
+          <div class="card">
+            <div class="icon-box" style="margin-bottom: 16px;">⚙️</div>
+            <h4 style="font-size: 17px; margin-bottom: 12px;">Powerful API’s</h4>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Build smarter systems using robust, well-documented APIs that simplify integrations.</p>
+          </div>
+          <div class="card">
+            <div class="icon-box" style="margin-bottom: 16px;">🔒</div>
+            <h4 style="font-size: 17px; margin-bottom: 12px;">Secure & isolated</h4>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Maintain absolute control with sandboxed structures designed to safeguard information.</p>
+          </div>
+          <div class="card">
+            <div class="icon-box" style="margin-bottom: 16px;">📈</div>
+            <h4 style="font-size: 17px; margin-bottom: 12px;">Ready for scale</h4>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Scale your structures seamlessly with databases optimized for speed and data flow.</p>
+          </div>
+          <div class="card">
+            <div class="icon-box" style="margin-bottom: 16px;">🔁</div>
+            <h4 style="font-size: 17px; margin-bottom: 12px;">Ongoing context</h4>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Maintain seamless continuity with persistent data pipelines across standard workflows.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEDICATED SUPPORT -->
+    <section class="section">
+      <div class="container">
+        <div class="split-layout">
+          <div class="split-text">
+            <div class="badge">24/7 Support</div>
+            <h2>Dedicated Support Available in Every Language</h2>
+            <p style="margin-top: 24px; font-size: 16px; color: var(--text-secondary); line-height: 1.8;">Our expert support engineers remain active round-the-clock to guarantee immediate response structures, quick assistance guides, and outstanding developer experiences globally.</p>
+            <div class="feature-list-vertical" style="margin-top: 32px;">
+              <div class="feature-item-inline">
+                <div class="check-icon">✓</div>
+                <div style="font-size: 15px; font-weight: 600;">Expert guidance for code deployment and system integration.</div>
+              </div>
+              <div class="feature-item-inline">
+                <div class="check-icon">✓</div>
+                <div style="font-size: 15px; font-weight: 600;">Fast, reliable troubleshooting support for complex server blocks.</div>
+              </div>
+              <div class="feature-item-inline">
+                <div class="check-icon">✓</div>
+                <div style="font-size: 15px; font-weight: 600;">Continuous performance improvements and active monitoring checks.</div>
+              </div>
+            </div>
+            <div style="margin-top: 40px;">
+              <a href="contact.html" class="btn btn-primary">Get Started Now</a>
+            </div>
+          </div>
+          <div class="split-graphic">
+            <!-- Dedicated Support Tech Graphic -->
+            <svg width="100%" max-width="400px" height="340px" viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="30" width="240" height="150" rx="12" fill="#161d15" stroke="#52ff7d" stroke-width="2" />
+              <!-- Chat head vector -->
+              <circle cx="150" cy="90" r="24" fill="#0c0c0c" stroke="#52ff7d" stroke-width="2" />
+              <circle cx="150" cy="84" r="8" fill="#52ff7d" />
+              <path d="M136 106 C136 98 164 98 164 106 Z" fill="#52ff7d" />
+              <!-- Lines simulating language characters -->
+              <line x1="60" y1="150" x2="110" y2="150" stroke="rgba(255, 255, 255, 0.4)" stroke-width="3" stroke-linecap="round" />
+              <line x1="190" y1="150" x2="240" y2="150" stroke="rgba(255, 255, 255, 0.4)" stroke-width="3" stroke-linecap="round" />
+              <circle cx="150" cy="150" r="4" fill="#52ff7d" />
+              <!-- Pulse waves -->
+              <circle cx="150" cy="90" r="40" stroke="rgba(82, 255, 125, 0.15)" stroke-width="1" />
+              <circle cx="150" cy="90" r="56" stroke="rgba(82, 255, 125, 0.08)" stroke-width="1" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+
+
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo-link">
+            <img src="assets/logo.svg" alt="Karsh Technologies">
+          </a>
+          <p>A small team of tech enthusiasts with a vision to redefine digital experiences through innovation, collaboration, and reliable development expertise.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Pages</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="services.html" class="footer-link">Services</a></li>
+            <li><a href="about.html" class="footer-link">About</a></li>
+            <li><a href="portfolio.html" class="footer-link">Portfolio</a></li>
+            <li><a href="news.html" class="footer-link">News</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact</h4>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Hostel 2, Vishwaniketan's iMEET, Survey Nos: 52, 54, 55, 56, 57, Kumbhivali, Tal. Khalapur, Maharashtra 410202</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span><a href="tel:+918149271069" style="color: inherit; text-decoration: none;">+91 8149271069</a></span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span><a href="mailto:rishikesh.backdev@gmail.com" style="color: inherit; text-decoration: none;">rishikesh.backdev@gmail.com</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>Copyright &copy; 2026 Karsh Technologies</span>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Github">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=1.9"></script>
+</body>
+</html>

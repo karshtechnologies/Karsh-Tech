@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none" class="karsh-logo">
+  <!-- Modern Hexagonal/Terminal Shield Icon -->
+  <g transform="translate(10, 10)">
+    <path d="M20 0 L38 10 L38 30 L20 40 L2 30 L2 10 Z" fill="#161d15" stroke="#52ff7d" stroke-width="2" stroke-linejoin="round" />
+    <!-- Glowing prompt symbol >_ -->
+    <path d="M12 14 L18 20 L12 26" stroke="#52ff7d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    <line x1="21" y1="26" x2="27" y2="26" stroke="#52ff7d" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+  <!-- Geometric Logo Typography -->
+  <text x="65" y="38" font-family="'Manrope', 'Inter', sans-serif" font-size="24" font-weight="800" fill="#ffffff" letter-spacing="0.5">
+    Karsh<tspan fill="#52ff7d">Tech</tspan>
+  </text>
+</svg>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Karsh Technologies</title>
+  <meta name="description" content="Learn about Karsh Technologies' pioneering innovation, software history since 2010, milestone statistics, and our team of expert developers and analysts.">
+  <link rel="stylesheet" href="css/style.css?v=1.2">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Page Specific Styles -->
+  <style>
+    .about-hero {
+      padding-top: 160px;
+      padding-bottom: 80px;
+      background: radial-gradient(circle at 10% 20%, rgba(82, 255, 125, 0.04) 0%, transparent 55%);
+    }
+
+    .about-hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .about-hero h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .about-hero p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* Team grid portraits */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 50px;
+    }
+
+    .team-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 32px;
+      text-align: center;
+      transition: var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(400px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(82, 255, 125, 0.05), transparent 45%);
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .team-card:hover::before {
+      opacity: 1;
+    }
+
+    .team-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-neon);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .expert-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 24px auto;
+      border: 2px solid var(--accent-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-neon);
+      box-shadow: 0 4px 15px rgba(82, 255, 125, 0.15);
+    }
+
+    .avatar-mscott { background: radial-gradient(circle, #203e30 0%, #0c0c0c 100%); }
+    .avatar-shewitt { background: radial-gradient(circle, #3e2843 0%, #0c0c0c 100%); }
+    .avatar-rjha { background: radial-gradient(circle, #1a2c40 0%, #0c0c0c 100%); }
+    .avatar-crigs { background: radial-gradient(circle, #443c20 0%, #0c0c0c 100%); }
+    .avatar-kanderson { background: radial-gradient(circle, #2d4538 0%, #0c0c0c 100%); }
+    .avatar-aclarcks { background: radial-gradient(circle, #402820 0%, #0c0c0c 100%); }
+
+    .team-name {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .team-role {
+      font-size: 14px;
+      color: var(--accent-neon);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Stats container custom heights */
+    .stat-number {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--accent-neon);
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 1024px) {
+      .about-hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="brand-container">
+        <a href="index.html" class="logo-link">
+          <img src="assets/logo.svg" alt="Karsh Technologies">
+        </a>
+        <div class="header-breadcrumbs">
+          <span class="breadcrumb-slash">/</span>
+          <span class="current-page-indicator">About</span>
+        </div>
+      </div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="about.html" class="nav-link active">About</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="news.html" class="nav-link">News</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="search-trigger" aria-label="Search site">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </a>
+        <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+        <div class="menu-toggle" id="menuToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="Karsh Technologies">
+      </a>
+      <div class="drawer-close" id="drawerClose">&times;</div>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+      <li><a href="services.html" class="mobile-nav-link">Services</a></li>
+      <li><a href="about.html" class="mobile-nav-link active">About</a></li>
+      <li><a href="portfolio.html" class="mobile-nav-link">Portfolio</a></li>
+      <li><a href="news.html" class="mobile-nav-link">News</a></li>
+      <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="btn btn-primary" style="margin-top: auto; width: 100%;">Get in Touch</a>
+  </div>
+
+  <!-- SEARCH OVERLAY MODAL -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-container">
+      <div class="search-close" id="searchClose">&times;</div>
+      <form class="search-form-overlay" action="news.html" method="GET">
+        <input type="text" name="s" id="searchOverlayInput" class="search-input-overlay" placeholder="Search resources, topics, advice..." required autocomplete="off">
+        <button type="submit" class="search-submit-overlay" aria-label="Submit search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </form>
+      <p class="search-hint">Press ESC to close search panel or click outside</p>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main id="main">
+
+    <!-- ABOUT HERO -->
+    <section class="section about-hero">
+      <div class="container about-hero-grid">
+        <div class="about-hero-content">
+          <div class="badge">Who We Are</div>
+          <h1>Pioneering Innovation in Mobile Apps, AI, And Virtual Reality Since 2010</h1>
+          <p>Founded in 2010, Karsh Technologies began as a small team of tech enthusiasts with a vision to redefine digital experiences through innovation, collaboration, and reliable development expertise. Over the past 15+ years, we have scaled our services worldwide, connecting clients to high-performing, robust microservice nodes.</p>
+        </div>
+        <div class="about-hero-graphics">
+          <svg width="100%" max-width="360px" height="260px" viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="20" width="180" height="110" rx="8" fill="#161d15" stroke="#52ff7d" stroke-width="2" />
+            <path d="M40 75 L70 100 L160 45" stroke="#52ff7d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+            <!-- Floating particles -->
+            <circle cx="30" cy="40" r="3" fill="#52ff7d" />
+            <circle cx="170" cy="110" r="4" fill="#52ff7d" stroke="#0c0c0c" stroke-width="1.5" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY MILESTONES STATS -->
+    <section class="section section-alt">
+      <div class="container grid-4">
+        <div class="card">
+          <div class="stat-number">15+</div>
+          <h3>Years of Experience</h3>
+          <p style="font-size: 14px; margin-top: 12px; color: var(--text-muted);">Seasoned team delivering elite, secure, and highly scalable software solutions since 2010.</p>
+        </div>
+        <div class="card">
+          <div class="stat-number">500+</div>
+          <h3>Happy Clients</h3>
+          <p style="font-size: 14px; margin-top: 12px; color: var(--text-muted);">Trusted by emerging startups and Fortune 500 tech companies across global markets.</p>
+        </div>
+        <div class="card">
+          <div class="stat-number">50+</div>
+          <h3>Skilled Experts</h3>
+          <p style="font-size: 14px; margin-top: 12px; color: var(--text-muted);">Passionate developers, network architects, and designers crafting digital products.</p>
+        </div>
+        <div class="card">
+          <div class="stat-number">99%</div>
+          <h3>Satisfaction Rate</h3>
+          <p style="font-size: 14px; margin-top: 12px; color: var(--text-muted);">Long-term corporate partnerships built on transparency, trust, and SLA guarantees.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR STORY -->
+    <section class="section">
+      <div class="container">
+        <div style="display: flex; align-items: center; gap: 60px;" class="about-hero-grid">
+          <div style="flex: 1;">
+            <div class="badge">Our Evolution</div>
+            <h2>Our Story</h2>
+            <p style="margin-top: 24px; font-size: 16px; line-height: 1.8; color: var(--text-secondary);">Karsh Technologies was founded with a shared vision to push the boundaries of digital innovation and deliver meaningful tech solutions. What began as a small team of passionate developers in Kumbhivali has grown into a world-class development collective. We remain committed to our founding values: writing resilient, clean code, fostering open collaboration, and continuously adapting to the data-driven future.</p>
+            <div style="margin-top: 40px;">
+              <a href="contact.html" class="btn btn-primary">Get Started Now</a>
+            </div>
+          </div>
+          <div style="flex: 1;" class="card">
+            <h3 style="margin-bottom: 24px;">Core Corporate Values</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 16px;">
+              <li style="display: flex; gap: 12px; font-size: 15px;">
+                <span style="color: var(--accent-neon); font-weight: 700;">[01]</span>
+                <span><strong>Technical Excellence:</strong> Delivering high-quality, bug-free, and performant code across all components.</span>
+              </li>
+              <li style="display: flex; gap: 12px; font-size: 15px;">
+                <span style="color: var(--accent-neon); font-weight: 700;">[02]</span>
+                <span><strong>Collaboration Culture:</strong> Driven by teamwork, transparent workflows, and a shared passion for development.</span>
+              </li>
+              <li style="display: flex; gap: 12px; font-size: 15px;">
+                <span style="color: var(--accent-neon); font-weight: 700;">[03]</span>
+                <span><strong>Absolute Safety:</strong> Sandboxing sensitive database environments to protect enterprise assets.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEET OUR EXPERTS -->
+    <section class="section section-alt">
+      <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 60px auto;">
+          <div class="badge">Team Members</div>
+          <h2>Meet Our Experts</h2>
+          <p style="margin-top: 16px; color: var(--text-secondary); font-size: 16px;">At Karsh Technologies, our strength lies in our people. Each team member brings unique expertise, deep experience, and creative problem-solving skills to every repository we build.</p>
+        </div>
+
+        <div class="team-grid" id="teamGrid">
+          
+          <!-- Loading Skeletal Frames (Disappear upon load) -->
+          <div class="team-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-md);">
+            <div class="skeleton-box" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px;"></div>
+            <div class="skeleton-box" style="width: 140px; height: 20px; margin-bottom: 10px;"></div>
+            <div class="skeleton-box" style="width: 100px; height: 14px;"></div>
+          </div>
+
+          <div class="team-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-md);">
+            <div class="skeleton-box" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px;"></div>
+            <div class="skeleton-box" style="width: 140px; height: 20px; margin-bottom: 10px;"></div>
+            <div class="skeleton-box" style="width: 100px; height: 14px;"></div>
+          </div>
+
+          <div class="team-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-md);">
+            <div class="skeleton-box" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px;"></div>
+            <div class="skeleton-box" style="width: 140px; height: 20px; margin-bottom: 10px;"></div>
+            <div class="skeleton-box" style="width: 100px; height: 14px;"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUSTED BY THOUSANDS -->
+    <section class="section">
+      <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <div class="badge">Connect</div>
+        <h2 style="font-size: clamp(26px, 4vw, 36px);">Trusted by Thousands of Developers and Companies</h2>
+        <p style="margin-top: 20px; font-size: 16px; color: var(--text-secondary); line-height: 1.8;">Our engineering solutions power complex web nodes across the globe. Join the network of companies building their next-generation architectures with Karsh Technologies.</p>
+        <div style="margin-top: 40px;">
+          <a href="contact.html" class="btn btn-primary" style="padding: 16px 36px;">Get in Touch Now</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+
+
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a href="index.html" class="logo-link">
+            <img src="assets/logo.svg" alt="Karsh Technologies">
+          </a>
+          <p>A small team of tech enthusiasts with a vision to redefine digital experiences through innovation, collaboration, and reliable development expertise.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Pages</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="services.html" class="footer-link">Services</a></li>
+            <li><a href="about.html" class="footer-link">About</a></li>
+            <li><a href="portfolio.html" class="footer-link">Portfolio</a></li>
+            <li><a href="news.html" class="footer-link">News</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Contact</h4>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Hostel 2, Vishwaniketan's iMEET, Survey Nos: 52, 54, 55, 56, 57, Kumbhivali, Tal. Khalapur, Maharashtra 410202</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span><a href="tel:+918149271069" style="color: inherit; text-decoration: none;">+91 8149271069</a></span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52ff7d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span><a href="mailto:rishikesh.backdev@gmail.com" style="color: inherit; text-decoration: none;">rishikesh.backdev@gmail.com</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>Copyright &copy; 2026 Karsh Technologies</span>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Github">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=1.9"></script>
+</body>
+</html>
